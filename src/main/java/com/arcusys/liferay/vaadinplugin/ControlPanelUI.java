@@ -659,12 +659,14 @@ public class ControlPanelUI extends UI {
                 new VaadinUpdater.UpgradeListener() {
 
                     public void updateComplete() {
+
                         outputLog.log("Vaadin version upgraded successfully.");
                         outputLog.log("Don't forget to compile widgetset.");
                         done(true);
                     }
 
                     private void done(boolean success) {
+                        getSession().getLockInstance().lock();
                         refreshVersionInfo();
                         // Stop polling
                         versionUpgradeProgressIndicator.setEnabled(false);
@@ -672,6 +674,7 @@ public class ControlPanelUI extends UI {
                         setButtonsEnabled(true);
 
                         vaadinUpdater = null;
+                        getSession().getLockInstance().unlock();
                     }
 
                     public void updateFailed(String message) {
