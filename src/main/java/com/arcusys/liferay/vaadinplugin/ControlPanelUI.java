@@ -659,10 +659,11 @@ public class ControlPanelUI extends UI {
                 new VaadinUpdater.UpgradeListener() {
 
                     public void updateComplete() {
-
+                        getSession().getLockInstance().lock();
                         outputLog.log("Vaadin version upgraded successfully.");
                         outputLog.log("Don't forget to compile widgetset.");
                         done(true);
+                        getSession().getLockInstance().unlock();
                     }
 
                     private void done(boolean success) {
@@ -678,6 +679,7 @@ public class ControlPanelUI extends UI {
                     }
 
                     public void updateFailed(String message) {
+                        getSession().getLockInstance().lock();
                         outputLog.log(message);
                         try {
                             vaadinUpdater.restoreFromBackup();
@@ -685,6 +687,7 @@ public class ControlPanelUI extends UI {
                             outputLog.log("ERROR: Can't restore files. Exception: " + ex.getMessage());
                         }
                         done(false);
+                        getSession().getLockInstance().unlock();
                     }
                 }, outputLog);
 

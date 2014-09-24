@@ -91,9 +91,16 @@ public abstract class ControlPanelPortletUtil {
         String vaadinClientJarsPath = getVaadinClientJarsDir();
         String libDir = FileSeparator + "lib" + FileSeparator;
 
+        Version version600 = new Version("6.0.0");
         Version version700 = new Version("7.0.0");
         Version version710 = new Version("7.1.0");
         Version version720 = new Version("7.2.0");
+
+        if (vaadinVersion.compareTo(version600) >= 0 && vaadinVersion.compareTo(version700) < 0) {
+            vaadinFiles = Arrays.asList(
+                    new VaadinFileInfo(VAADIN_JAR, portalPath, 100)
+            );
+        }
 
         if (vaadinVersion.compareTo(version700) >= 0 && vaadinVersion.compareTo(version710) < 0) {
             vaadinFiles = Arrays.asList(
