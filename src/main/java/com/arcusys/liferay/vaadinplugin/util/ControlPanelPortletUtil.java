@@ -24,8 +24,14 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.util.PortalUtil;
+import com.vaadin.server.Constants;
 import org.apache.commons.io.IOUtils;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
+import javax.portlet.PortletConfig;
+import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
@@ -34,10 +40,6 @@ import java.util.jar.Attributes;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
-
-import javax.portlet.PortletConfig;
-
-import com.vaadin.server.Constants;
 
 /**
  * Created with IntelliJ IDEA.
@@ -53,9 +55,13 @@ public abstract class ControlPanelPortletUtil {
     public static final String VAADIN_SERVER_JAR = "vaadin-server.jar";
     public static final String VAADIN_THEMES_JAR = "vaadin-themes.jar";
     private static final String VAADIN_THEME_COMPILER_JAR = "vaadin-theme-compiler.jar";
+    private static final String VAADIN_SASS_COMPILER_JAR = "vaadin-sass-compiler.jar";
+    private static final String VAADIN_PUSH_JAR = "vaadin-push.jar";
 
     public static final String VAADIN_CLIENT_COMPILED_JAR = "vaadin-client-compiled.jar";
     private static final String VAADIN_CLIENT_COMPILER_JAR = "vaadin-client-compiler.jar";
+    private static final String VAADIN_CLIENT_COMPILER_DEPS_JAR = "vaadin-client-compiler-deps.jar";
+    public static final Integer[] VAADIN_CLIENT_COMPILER_DEPS_LOW_VERSION = new Integer[]{7, 1, 0};
     private static final String VAADIN_CLIENT_JAR = "vaadin-client.jar";
     private static final String VAADIN_SHARED_JAR = "vaadin-shared.jar";
     private static final String VAADIN_SHARED_DEPS_JAR = "vaadin-shared-deps.jar";
@@ -71,30 +77,87 @@ public abstract class ControlPanelPortletUtil {
 
     public static final String FileSeparator = File.separator;
 
-    public static Collection<VaadinFileInfo> getVaadinFilesInfo() {
+    public static Collection<VaadinFileInfo> getVaadinFilesInfo(Version vaadinVersion) {
+        List<VaadinFileInfo> result = new ArrayList<VaadinFileInfo>();
+        for (VaadinFileInfo fileInfo : getVaadinFilesInfoForVersion(vaadinVersion)) {
+            if (vaadinVersion.compareTo(fileInfo.getVaadinVersionLow()) >= 0)
+                result.add(fileInfo);
+        }
+        return result;
+    }
 
-        if (vaadinFiles == null) {
-            String portalPath = getPortalLibDir();
-            String vaadinClientJarsPath = getVaadinClientJarsDir();
+    public static Collection<VaadinFileInfo> getVaadinFilesInfoForVersion(Version vaadinVersion) {
+        String portalPath = getPortalLibDir();
+        String vaadinClientJarsPath = getVaadinClientJarsDir();
+        String libDir = FileSeparator + "lib" + FileSeparator;
 
+        Version version600 = new Version("6.0.0");
+        Version version700 = new Version("7.0.0");
+        Version version710 = new Version("7.1.0");
+        Version version720 = new Version("7.2.0");
+
+        if (vaadinVersion.compareTo(version600) >= 0 && vaadinVersion.compareTo(version700) < 0) {
+            vaadinFiles = Arrays.asList(
+                    new VaadinFileInfo(VAADIN_JAR, portalPath, 100)
+            );
+        }
+
+        if (vaadinVersion.compareTo(version700) >= 0 && vaadinVersion.compareTo(version710) < 0) {
             vaadinFiles = Arrays.asList(
                     new VaadinFileInfo(VAADIN_SERVER_JAR, portalPath, 100),
                     new VaadinFileInfo(VAADIN_CLIENT_JAR, vaadinClientJarsPath, 200),
-                    new VaadinFileInfo(VAADIN_THEMES_JAR,  portalPath, 300),
+                    new VaadinFileInfo(VAADIN_THEMES_JAR, portalPath, 300),
                     new VaadinFileInfo(VAADIN_THEME_COMPILER_JAR, portalPath, 400),
                     new VaadinFileInfo(VAADIN_SHARED_JAR, portalPath, 500),
-                    new VaadinFileInfo(VAADIN_SHARED_DEPS_JAR, portalPath, 600, FileSeparator + "lib" + FileSeparator),
+                    new VaadinFileInfo(VAADIN_SHARED_DEPS_JAR, portalPath, 600, libDir),
                     new VaadinFileInfo(VAADIN_CLIENT_COMPILER_JAR, vaadinClientJarsPath, 700),
-                    new VaadinFileInfo(JSOUP_JAR, portalPath, 800, FileSeparator + "lib" + FileSeparator),
-                    new VaadinFileInfo(VALIDATON_API, portalPath, 900, FileSeparator + "lib" + FileSeparator),
-                    new VaadinFileInfo(VALIDATON_API_SOURCES, portalPath, 1000, FileSeparator + "lib" + FileSeparator)
+                    new VaadinFileInfo(VAADIN_CLIENT_COMPILER_DEPS_JAR, vaadinClientJarsPath, 750, libDir, VAADIN_CLIENT_COMPILER_DEPS_LOW_VERSION),
+                    new VaadinFileInfo(JSOUP_JAR, portalPath, 800, libDir),
+                    new VaadinFileInfo(VALIDATON_API, portalPath, 900, libDir),
+                    new VaadinFileInfo(VALIDATON_API_SOURCES, portalPath, 1000, libDir)
             );
         }
+
+        if (vaadinVersion.compareTo(version710) >= 0 && vaadinVersion.compareTo(version720) < 0) {
+            vaadinFiles = Arrays.asList(
+                    new VaadinFileInfo(VAADIN_SERVER_JAR, portalPath, 100),
+                    new VaadinFileInfo(VAADIN_CLIENT_JAR, vaadinClientJarsPath, 200),
+                    new VaadinFileInfo(VAADIN_THEMES_JAR, portalPath, 300),
+                    new VaadinFileInfo(VAADIN_THEME_COMPILER_JAR, portalPath, 400),
+                    new VaadinFileInfo(VAADIN_SHARED_JAR, portalPath, 500),
+                    new VaadinFileInfo(VAADIN_PUSH_JAR, portalPath, 550),
+                    new VaadinFileInfo(VAADIN_SHARED_DEPS_JAR, portalPath, 600, libDir),
+                    new VaadinFileInfo(VAADIN_CLIENT_COMPILER_JAR, vaadinClientJarsPath, 700),
+                    new VaadinFileInfo(VAADIN_CLIENT_COMPILER_DEPS_JAR, vaadinClientJarsPath, 750, libDir, VAADIN_CLIENT_COMPILER_DEPS_LOW_VERSION),
+                    new VaadinFileInfo(JSOUP_JAR, portalPath, 800, libDir),
+                    new VaadinFileInfo(VALIDATON_API, portalPath, 900, libDir),
+                    new VaadinFileInfo(VALIDATON_API_SOURCES, portalPath, 1000, libDir)
+            );
+        }
+
+        if (vaadinVersion.compareTo(version720) >= 0) {
+            vaadinFiles = Arrays.asList(
+                    new VaadinFileInfo(VAADIN_SERVER_JAR, portalPath, 100),
+                    new VaadinFileInfo(VAADIN_CLIENT_JAR, vaadinClientJarsPath, 200),
+                    new VaadinFileInfo(VAADIN_THEMES_JAR, portalPath, 300),
+                    new VaadinFileInfo(VAADIN_SASS_COMPILER_JAR, portalPath, 400, libDir),
+                    new VaadinFileInfo(VAADIN_SHARED_JAR, portalPath, 500),
+                    new VaadinFileInfo(VAADIN_PUSH_JAR, portalPath, 550),
+                    new VaadinFileInfo(VAADIN_CLIENT_COMPILER_JAR, vaadinClientJarsPath, 700),
+                    new VaadinFileInfo(VAADIN_CLIENT_COMPILER_DEPS_JAR, vaadinClientJarsPath, 750, libDir, VAADIN_CLIENT_COMPILER_DEPS_LOW_VERSION),
+                    new VaadinFileInfo(JSOUP_JAR, portalPath, 800, libDir),
+                    new VaadinFileInfo(VALIDATON_API, portalPath, 900, libDir),
+                    new VaadinFileInfo(VALIDATON_API_SOURCES, portalPath, 1000, libDir)
+            );
+        }
+
+        if(vaadinFiles == null) throw new IllegalArgumentException("Unsupported vaadin version");
+
         return vaadinFiles;
     }
 
     public static String getPortalLibDir() {
-        // return ".../tomcat-6.0.29/webapps/ROOT/WEB-INF/lib/";
+        // return ".../tomcat-{version}/webapps/ROOT/WEB-INF/lib/";
         return PortalUtil.getPortalLibDir();
     }
 
@@ -108,13 +171,13 @@ public abstract class ControlPanelPortletUtil {
     }
 
     public static File get6VersionVaadinJarLocation() {
-        // return ".../tomcat-6.0.29/webapps/ROOT/WEB-INF/lib/vaadin.jar";
+        // return ".../tomcat-{version}/webapps/ROOT/WEB-INF/lib/vaadin.jar";
         File portalLibDir = new File(getPortalLibDir());
         return new File(portalLibDir, VAADIN_JAR);
     }
 
     public static File getVaadinServerJarLocation() {
-        // return ".../tomcat-6.0.29/webapps/ROOT/WEB-INF/lib/";
+        // return ".../tomcat-{version}/webapps/ROOT/WEB-INF/lib/";
         File portalLibDir = new File(getPortalLibDir());
         return new File(portalLibDir, VAADIN_SERVER_JAR);
     }
@@ -122,6 +185,11 @@ public abstract class ControlPanelPortletUtil {
     public static File getVaadinClientCompilerJarLocation() {
         File portalLibDir = new File(getVaadinClientJarsDir());
         return new File(portalLibDir, VAADIN_CLIENT_COMPILER_JAR);
+    }
+
+    public static File getVaadinClientCompilerDepsJarLocation() {
+        File portalLibDir = new File(getVaadinClientJarsDir());
+        return new File(portalLibDir, VAADIN_CLIENT_COMPILER_DEPS_JAR);
     }
 
     public static File getVaadinClientJarLocation() {
@@ -158,39 +226,57 @@ public abstract class ControlPanelPortletUtil {
         return new File(portalLibDir, VALIDATON_API_SOURCES);
     }
 
+    public static Version getPortalVaadinVersion() {
+        String versionRaw = null;
+        try {
+            versionRaw = ControlPanelPortletUtil.getPortalVaadinServerVersion();
+        } catch (FileNotFoundException e) {
+            log.warn("vaadin-server.jar couldn't be read. file not found");
+        } catch (IOException e) {
+            log.warn("vaadin-server.jar couldn't be read.", e);
+        }
+
+        if (versionRaw == null) try {
+            log.warn("vaadin-server.jar couldn't be read.");
+            versionRaw = ControlPanelPortletUtil.getPortalVaadin6Version();
+        } catch (IOException e) {
+            log.warn("vaadin.jar couldn't be read.", e);
+        }
+
+        if (versionRaw == null) {
+            log.warn("vaadin.jar couldn't be read.");
+        }
+
+        return new Version(versionRaw);
+    }
+
     /**
      * Returns the Vaadin version for the Vaadin jar used in the portal.
      *
      * @return The version as a String or null if the required version could not
-     *         be determined
+     * be determined
      * @throws java.io.IOException If the portal's Vaadin jar cannot be read
      */
-    public static String getPortalVaadinVersion() throws IOException {
-
+    public static String getPortalVaadinServerVersion() throws IOException {
         return getPortalVaadinJarVersion(getVaadinServerJarLocation().getAbsolutePath());
     }
 
     public static String getPortalVaadinJarVersion(String jarPath) throws IOException {
         JarFile jarFile = new JarFile(jarPath);
         try {
-
-            // Check Vaadin 7 version from manifest
-            String manifestVaadinVersion = getManifestVaadinVersion(jarFile);
-            if (manifestVaadinVersion != null) {
-                return manifestVaadinVersion;
+            String version = getManifestVaadinVersion(jarFile);
+            if (version == null) {
+                version = getPomVaadinVersion(jarFile);
             }
+
+            return version;
+        } catch (Exception ex) {
             return null;
-        }
-        catch (Exception ex){
-            return null;
-        }
-        finally {
-            if (jarFile != null) {
-                try {
-                    jarFile.close();
-                } catch (IOException e) {
-                    log.warn(e);
-                }
+        } finally {
+            try {
+                jarFile.close();
+            } catch (IOException e) {
+                log.warn(e);
             }
         }
     }
@@ -217,9 +303,43 @@ public abstract class ControlPanelPortletUtil {
         }
     }
 
-    private static String getManifestVaadinVersion(JarFile jarFile)
-            throws IOException {
-        return getManifestAttribute(jarFile, VAADIN_VERSION_MANIFEST_STRING);
+    private static String getManifestVaadinVersion(JarFile jarFile) {
+        try {
+            return getManifestAttribute(jarFile, VAADIN_VERSION_MANIFEST_STRING);
+        } catch (Exception exception) {
+            return null;
+        }
+    }
+
+    private static String getPomVaadinVersion(JarFile jarFile) {
+        try {
+            JarEntry pomEntry = null;
+
+            // find pom.xml file in META-INF/maven and sub folders
+            Enumeration<JarEntry> enumerator = jarFile.entries();
+            while (enumerator.hasMoreElements()) {
+                JarEntry entry = enumerator.nextElement();
+                if (entry.getName().startsWith("META-INF/maven/") && entry.getName().endsWith("/pom.xml")) {
+                    pomEntry = entry;
+                    break;
+                }
+            }
+
+            // read project version from pom.xml
+            if (pomEntry != null) {
+                Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(jarFile.getInputStream(pomEntry));
+                NodeList children = document.getDocumentElement().getChildNodes();
+                for (int i = 0; i < children.getLength(); i++) {
+                    Node node = children.item(i + 1);
+                    if (node.getNodeName().equals("version")) {
+                        return node.getTextContent();
+                    }
+                }
+            }
+            return null;
+        } catch (Exception exception) {
+            return null;
+        }
     }
 
     private static String getManifestVaadin6Version(JarFile jarFile)
@@ -265,13 +385,13 @@ public abstract class ControlPanelPortletUtil {
     }
 
     public static String getVaadinResourceDir() {
-        // return ".../tomcat-6.0.29/webapps/ROOT/html/VAADIN/";
+        // return ".../tomcat-{version}/webapps/ROOT/html/VAADIN/";
         return PortalUtil.getPortalWebDir()
                 + PropsUtil.get("vaadin.resources.path") + "/VAADIN/";
     }
 
     public static String getWidgetsetDir() {
-        // return ".../tomcat-6.0.29/webapps/ROOT/html/VAADIN/widgetsets/";
+        // return ".../tomcat-{version}/webapps/ROOT/html/VAADIN/widgetsets/";
         return getVaadinResourceDir() + "/widgetsets/";
     }
 

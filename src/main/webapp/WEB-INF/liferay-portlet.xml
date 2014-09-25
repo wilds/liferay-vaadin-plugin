@@ -23,10 +23,10 @@
 
 <liferay-portlet-app>
 	<portlet>
-		<portlet-name>Vaadin Configuration</portlet-name>
+		<portlet-name>VaadinConfiguration</portlet-name>
 		<icon>/VAADIN/icon.png</icon>
 		<!-- Enable the Control Panel in Liferay Control Panel -->
-		<control-panel-entry-category>portal</control-panel-entry-category>
+		<control-panel-entry-category>configuration</control-panel-entry-category>
 		<control-panel-entry-weight>20.0</control-panel-entry-weight>
 
 		<instanceable>false</instanceable>
