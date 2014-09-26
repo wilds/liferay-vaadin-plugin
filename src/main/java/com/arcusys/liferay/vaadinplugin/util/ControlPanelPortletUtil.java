@@ -169,12 +169,14 @@ public abstract class ControlPanelPortletUtil {
                     new VaadinFileInfo(VAADIN_PUSH_JAR, portalPath, 600),
                     new VaadinFileInfo(VAADIN_CLIENT_COMPILER_JAR, vaadinClientJarsPath, 700),
                     new VaadinFileInfo(VAADIN_CLIENT_COMPILER_DEPS_JAR, vaadinClientJarsPath, 800, libDir, VAADIN_CLIENT_COMPILER_DEPS_LOW_VERSION),
-                    new VaadinFileInfo(JSON_JAR, vaadinClientJarsPath, 900, libDir),
-                    new VaadinFileInfo(SAC_JAR, vaadinClientJarsPath, 1000, libDir),
-                    new VaadinFileInfo(FLUTE_JAR, vaadinClientJarsPath, 1100, libDir),
-                    new VaadinFileInfo(JSOUP_JAR, portalPath, 1200, libDir),
-                    new VaadinFileInfo(VALIDATON_API, portalPath, 1300, libDir),
-                    new VaadinFileInfo(VALIDATON_API_SOURCES, portalPath, 1400, libDir)
+                    new VaadinFileInfo(GUAVA_JAR, vaadinClientJarsPath, 900, libDir),
+                    new VaadinFileInfo(STREAM_HTML_PARSER_JSILVER_JAR, vaadinClientJarsPath, 1000, libDir),
+                    new VaadinFileInfo(JSON_JAR, vaadinClientJarsPath, 1100, libDir),
+                    new VaadinFileInfo(SAC_JAR, vaadinClientJarsPath, 1200, libDir),
+                    new VaadinFileInfo(FLUTE_JAR, vaadinClientJarsPath, 1300, libDir),
+                    new VaadinFileInfo(JSOUP_JAR, portalPath, 1400, libDir),
+                    new VaadinFileInfo(VALIDATON_API, portalPath, 1500, libDir),
+                    new VaadinFileInfo(VALIDATON_API_SOURCES, portalPath, 1600, libDir)
             );
         }
 

@@ -133,10 +133,9 @@ public class WidgetsetCompilationHandler implements Runnable {
         } else if(version.compareTo(vaadin720) >= 0 && version.compareTo(vaadin730) < 0) {
             // guava-16.0.1.vaadin1.jar
             classpathEntries.add(ControlPanelPortletUtil.getGuavaJarLocation());
-
             // streamhtmlparser-jsilver-0.0.10.vaadin1.jar
             classpathEntries.add(ControlPanelPortletUtil.getStreamhtmlparserJsilverJarLocation());
-        }else if(version.compareTo(vaadin730) >= 0 ) {
+        } else if(version.compareTo(vaadin730) >= 0 ) {
             // guava-16.0.1.vaadin1.jar
             classpathEntries.add(ControlPanelPortletUtil.getGuavaJarLocation());
             // streamhtmlparser-jsilver-0.0.10.vaadin1.jar
