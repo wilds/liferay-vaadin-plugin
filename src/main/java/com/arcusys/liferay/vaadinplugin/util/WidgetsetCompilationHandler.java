@@ -32,8 +32,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-//import com.arcusys.vaadin.controlpanel.util.WidgetsetCompiler.CompileOutputConsumer;
-
 public class WidgetsetCompilationHandler implements Runnable {
     private static final Log log = LogFactoryUtil.getLog(WidgetsetCompilationHandler.class);
 
@@ -141,9 +139,14 @@ public class WidgetsetCompilationHandler implements Runnable {
         }else if(version.compareTo(vaadin730) >= 0 ) {
             // guava-16.0.1.vaadin1.jar
             classpathEntries.add(ControlPanelPortletUtil.getGuavaJarLocation());
-
             // streamhtmlparser-jsilver-0.0.10.vaadin1.jar
             classpathEntries.add(ControlPanelPortletUtil.getStreamhtmlparserJsilverJarLocation());
+            // flute-1.3.0.gg2.jar
+            classpathEntries.add(ControlPanelPortletUtil.getFluteJarLocation());
+            // json-0.0.20080701.jar
+            classpathEntries.add(ControlPanelPortletUtil.getJsonJarLocation());
+            // sac-1.3.jar
+            classpathEntries.add(ControlPanelPortletUtil.getSacJarLocation());
         }
 
         // The ant.jar is located in the portal lib dir

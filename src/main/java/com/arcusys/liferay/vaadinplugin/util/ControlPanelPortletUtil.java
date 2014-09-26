@@ -69,8 +69,9 @@ public abstract class ControlPanelPortletUtil {
     private static final String ANT_JAR = "ant.jar";
     private static final String GUAVA_JAR = "guava.vaadin1.jar";
     private static final String STREAM_HTML_PARSER_JSILVER_JAR = "streamhtmlparser-jsilver.vaadin1.jar";
-
-
+    private static final String FLUTE_JAR = "flute.jar";
+    private static final String JSON_JAR = "json.jar";
+    private static final String SAC_JAR = "sac.jar";
     private static final String VAADIN_JAR = "vaadin.jar";
     private static final String VALIDATON_API = "validation-api.GA.jar";
     private static final String VALIDATON_API_SOURCES = "validation-api.GA-sources.jar";
@@ -165,12 +166,15 @@ public abstract class ControlPanelPortletUtil {
                     new VaadinFileInfo(VAADIN_THEMES_JAR, portalPath, 300),
                     new VaadinFileInfo(VAADIN_SASS_COMPILER_JAR, portalPath, 400, libDir),
                     new VaadinFileInfo(VAADIN_SHARED_JAR, portalPath, 500),
-                    new VaadinFileInfo(VAADIN_PUSH_JAR, portalPath, 550),
+                    new VaadinFileInfo(VAADIN_PUSH_JAR, portalPath, 600),
                     new VaadinFileInfo(VAADIN_CLIENT_COMPILER_JAR, vaadinClientJarsPath, 700),
-                    new VaadinFileInfo(VAADIN_CLIENT_COMPILER_DEPS_JAR, vaadinClientJarsPath, 750, libDir, VAADIN_CLIENT_COMPILER_DEPS_LOW_VERSION),
-                    new VaadinFileInfo(JSOUP_JAR, portalPath, 800, libDir),
-                    new VaadinFileInfo(VALIDATON_API, portalPath, 900, libDir),
-                    new VaadinFileInfo(VALIDATON_API_SOURCES, portalPath, 1000, libDir)
+                    new VaadinFileInfo(VAADIN_CLIENT_COMPILER_DEPS_JAR, vaadinClientJarsPath, 800, libDir, VAADIN_CLIENT_COMPILER_DEPS_LOW_VERSION),
+                    new VaadinFileInfo(JSON_JAR, vaadinClientJarsPath, 900, libDir),
+                    new VaadinFileInfo(SAC_JAR, vaadinClientJarsPath, 1000, libDir),
+                    new VaadinFileInfo(FLUTE_JAR, vaadinClientJarsPath, 1100, libDir),
+                    new VaadinFileInfo(JSOUP_JAR, portalPath, 1200, libDir),
+                    new VaadinFileInfo(VALIDATON_API, portalPath, 1300, libDir),
+                    new VaadinFileInfo(VALIDATON_API_SOURCES, portalPath, 1400, libDir)
             );
         }
 
@@ -237,6 +241,18 @@ public abstract class ControlPanelPortletUtil {
 
     public static File getStreamhtmlparserJsilverJarLocation() {
         return new File(getVaadinClientJarsLocation(), STREAM_HTML_PARSER_JSILVER_JAR);
+    }
+
+    public static File getFluteJarLocation() {
+        return new File(getVaadinClientJarsLocation(), FLUTE_JAR);
+    }
+
+    public static File getJsonJarLocation() {
+        return new File(getVaadinClientJarsLocation(), JSON_JAR);
+    }
+
+    public static File getSacJarLocation() {
+        return new File(getVaadinClientJarsLocation(), SAC_JAR);
     }
 
     public static File getAntJarLocation() {
