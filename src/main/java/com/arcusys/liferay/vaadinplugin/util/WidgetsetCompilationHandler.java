@@ -103,17 +103,16 @@ public class WidgetsetCompilationHandler implements Runnable {
 
     private List<File> getClasspathEntries(File entry) {
         Version version = ControlPanelPortletUtil.getPortalVaadinVersion();
+        Version vaadin700 = new Version("7.0.0");
+        Version vaadin710 = new Version("7.1.0");
+        Version vaadin720 = new Version("7.2.0");
+        Version vaadin730 = new Version("7.3.0");
 
         List<File> classpathEntries = new ArrayList<File>();
         classpathEntries.add(entry);
 
         // The vaadin-client-compiler JAR is located in the portal lib dir
         classpathEntries.add(ControlPanelPortletUtil.getVaadinClientCompilerJarLocation());
-
-        if (version.compareTo(ControlPanelPortletUtil.VAADIN_CLIENT_COMPILER_DEPS_LOW_VERSION) >= 0) {
-            // The vaadin-client-compiler-deps JAR is located in the portal lib dir
-            classpathEntries.add(ControlPanelPortletUtil.getVaadinClientCompilerDepsJarLocation());
-        }
 
         // The vaadin-client JAR is located in the portal lib dir
         classpathEntries.add(ControlPanelPortletUtil.getVaadinClientJarLocation());
@@ -124,8 +123,28 @@ public class WidgetsetCompilationHandler implements Runnable {
         // The vaadin-shared.jar is located in the portal lib dir
         classpathEntries.add(ControlPanelPortletUtil.getVaadinSharedJarLocation());
 
-        // The vaadin-shared-deps.jar is located in the portal lib dir
-        classpathEntries.add(ControlPanelPortletUtil.getVaadinSharedDepsJarLocation());
+        if (version.compareTo(vaadin710) >= 0) {
+            // The vaadin-client-compiler-deps JAR is located in the portal lib dir
+            classpathEntries.add(ControlPanelPortletUtil.getVaadinClientCompilerDepsJarLocation());
+        }
+
+        if(version.compareTo(vaadin700) >= 0 && version.compareTo(vaadin720) < 0){
+            // The vaadin-shared-deps.jar is located in the portal lib dir
+            classpathEntries.add(ControlPanelPortletUtil.getVaadinSharedDepsJarLocation());
+
+        } else if(version.compareTo(vaadin720) >= 0 && version.compareTo(vaadin730) < 0) {
+            // guava-16.0.1.vaadin1.jar
+            classpathEntries.add(ControlPanelPortletUtil.getGuavaJarLocation());
+
+            // streamhtmlparser-jsilver-0.0.10.vaadin1.jar
+            classpathEntries.add(ControlPanelPortletUtil.getStreamhtmlparserJsilverJarLocation());
+        }else if(version.compareTo(vaadin730) >= 0 ) {
+            // guava-16.0.1.vaadin1.jar
+            classpathEntries.add(ControlPanelPortletUtil.getGuavaJarLocation());
+
+            // streamhtmlparser-jsilver-0.0.10.vaadin1.jar
+            classpathEntries.add(ControlPanelPortletUtil.getStreamhtmlparserJsilverJarLocation());
+        }
 
         // The ant.jar is located in the portal lib dir
         classpathEntries.add(ControlPanelPortletUtil.getAntJarLocation());

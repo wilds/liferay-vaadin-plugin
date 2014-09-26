@@ -67,6 +67,10 @@ public abstract class ControlPanelPortletUtil {
     private static final String VAADIN_SHARED_DEPS_JAR = "vaadin-shared-deps.jar";
     private static final String JSOUP_JAR = "jsoup.jar";
     private static final String ANT_JAR = "ant.jar";
+    private static final String GUAVA_JAR = "guava.vaadin1.jar";
+    private static final String STREAM_HTML_PARSER_JSILVER_JAR = "streamhtmlparser-jsilver.vaadin1.jar";
+
+
     private static final String VAADIN_JAR = "vaadin.jar";
     private static final String VALIDATON_API = "validation-api.GA.jar";
     private static final String VALIDATON_API_SOURCES = "validation-api.GA-sources.jar";
@@ -87,14 +91,15 @@ public abstract class ControlPanelPortletUtil {
     }
 
     public static Collection<VaadinFileInfo> getVaadinFilesInfoForVersion(Version vaadinVersion) {
-        String portalPath = getPortalLibDir();
-        String vaadinClientJarsPath = getVaadinClientJarsDir();
+        String portalPath = getPortalLibLocationPath();
+        String vaadinClientJarsPath = getVaadinClientJarsLocationPath();
         String libDir = FileSeparator + "lib" + FileSeparator;
 
         Version version600 = new Version("6.0.0");
         Version version700 = new Version("7.0.0");
         Version version710 = new Version("7.1.0");
         Version version720 = new Version("7.2.0");
+        Version version730 = new Version("7.3.0");
 
         if (vaadinVersion.compareTo(version600) >= 0 && vaadinVersion.compareTo(version700) < 0) {
             vaadinFiles = Arrays.asList(
@@ -135,7 +140,25 @@ public abstract class ControlPanelPortletUtil {
             );
         }
 
-        if (vaadinVersion.compareTo(version720) >= 0) {
+        if (vaadinVersion.compareTo(version720) >= 0 && vaadinVersion.compareTo(version730) < 0) {
+            vaadinFiles = Arrays.asList(
+                    new VaadinFileInfo(VAADIN_SERVER_JAR, portalPath, 100),
+                    new VaadinFileInfo(VAADIN_CLIENT_JAR, vaadinClientJarsPath, 200),
+                    new VaadinFileInfo(VAADIN_THEMES_JAR, portalPath, 300),
+                    new VaadinFileInfo(VAADIN_SASS_COMPILER_JAR, portalPath, 400, libDir),
+                    new VaadinFileInfo(VAADIN_SHARED_JAR, portalPath, 500),
+                    new VaadinFileInfo(VAADIN_PUSH_JAR, portalPath, 550),
+                    new VaadinFileInfo(VAADIN_CLIENT_COMPILER_JAR, vaadinClientJarsPath, 700),
+                    new VaadinFileInfo(VAADIN_CLIENT_COMPILER_DEPS_JAR, vaadinClientJarsPath, 750, libDir, VAADIN_CLIENT_COMPILER_DEPS_LOW_VERSION),
+                    new VaadinFileInfo(GUAVA_JAR, vaadinClientJarsPath, 800, libDir),
+                    new VaadinFileInfo(STREAM_HTML_PARSER_JSILVER_JAR, vaadinClientJarsPath, 900, libDir),
+                    new VaadinFileInfo(JSOUP_JAR, portalPath, 1000, libDir),
+                    new VaadinFileInfo(VALIDATON_API, portalPath, 1100, libDir),
+                    new VaadinFileInfo(VALIDATON_API_SOURCES, portalPath, 1200, libDir)
+            );
+        }
+
+        if (vaadinVersion.compareTo(version730) >= 0) {
             vaadinFiles = Arrays.asList(
                     new VaadinFileInfo(VAADIN_SERVER_JAR, portalPath, 100),
                     new VaadinFileInfo(VAADIN_CLIENT_JAR, vaadinClientJarsPath, 200),
@@ -156,74 +179,76 @@ public abstract class ControlPanelPortletUtil {
         return vaadinFiles;
     }
 
-    public static String getPortalLibDir() {
+    public static String getPortalLibLocationPath() {
         // return ".../tomcat-{version}/webapps/ROOT/WEB-INF/lib/";
         return PortalUtil.getPortalLibDir();
+    }
+
+    public static File getPortalLibLocation() {
+        // return ".../tomcat-{version}/webapps/ROOT/WEB-INF/lib/";
+        return  new File(getPortalLibLocationPath());
     }
 
     private static String getPortalWebDir() {
         return PortalUtil.getPortalWebDir();
     }
 
-    public static String getVaadinClientJarsDir() {
+    public static String getVaadinClientJarsLocationPath() {
         // return ".../tomcat-{version}/webapps/ROOT/WEB-INF/vaadin-clients-jars/";
         return getPortalWebDir() + "WEB-INF" + FileSeparator + "vaadin-clients-jars" + FileSeparator;
     }
 
+    public static File getVaadinClientJarsLocation() {
+        // return ".../tomcat-{version}/webapps/ROOT/WEB-INF/vaadin-clients-jars/";
+        return new File(getVaadinClientJarsLocationPath());
+    }
+
     public static File get6VersionVaadinJarLocation() {
-        // return ".../tomcat-{version}/webapps/ROOT/WEB-INF/lib/vaadin.jar";
-        File portalLibDir = new File(getPortalLibDir());
-        return new File(portalLibDir, VAADIN_JAR);
+        return new File(getPortalLibLocation(), VAADIN_JAR);
     }
 
     public static File getVaadinServerJarLocation() {
-        // return ".../tomcat-{version}/webapps/ROOT/WEB-INF/lib/";
-        File portalLibDir = new File(getPortalLibDir());
-        return new File(portalLibDir, VAADIN_SERVER_JAR);
+        return new File(getPortalLibLocation(), VAADIN_SERVER_JAR);
     }
 
     public static File getVaadinClientCompilerJarLocation() {
-        File portalLibDir = new File(getVaadinClientJarsDir());
-        return new File(portalLibDir, VAADIN_CLIENT_COMPILER_JAR);
+        return new File(getVaadinClientJarsLocation(), VAADIN_CLIENT_COMPILER_JAR);
     }
 
     public static File getVaadinClientCompilerDepsJarLocation() {
-        File portalLibDir = new File(getVaadinClientJarsDir());
-        return new File(portalLibDir, VAADIN_CLIENT_COMPILER_DEPS_JAR);
+        return new File(getVaadinClientJarsLocation(), VAADIN_CLIENT_COMPILER_DEPS_JAR);
     }
 
     public static File getVaadinClientJarLocation() {
-        File portalLibDir = new File(getVaadinClientJarsDir());
-        return new File(portalLibDir, VAADIN_CLIENT_JAR);
+        return new File(getVaadinClientJarsLocation(), VAADIN_CLIENT_JAR);
     }
 
     public static File getVaadinSharedJarLocation() {
-        // return ".../tomcat-{version}/webapps/ROOT/WEB-INF/lib/";
-        File portalLibDir = new File(getPortalLibDir());
-        return new File(portalLibDir, VAADIN_SHARED_JAR);
+        return new File(getPortalLibLocation(), VAADIN_SHARED_JAR);
     }
 
     public static File getVaadinSharedDepsJarLocation() {
-        // return ".../tomcat-{version}/webapps/ROOT/WEB-INF/lib/";
-        File portalLibDir = new File(getPortalLibDir());
-        return new File(portalLibDir, VAADIN_SHARED_DEPS_JAR);
+        return new File(getPortalLibLocation(), VAADIN_SHARED_DEPS_JAR);
+    }
+
+    public static File getGuavaJarLocation() {
+        return new File(getVaadinClientJarsLocation(), GUAVA_JAR);
+    }
+
+    public static File getStreamhtmlparserJsilverJarLocation() {
+        return new File(getVaadinClientJarsLocation(), STREAM_HTML_PARSER_JSILVER_JAR);
     }
 
     public static File getAntJarLocation() {
-        File portalLibDir = new File(getPortalLibDir());
-        return new File(portalLibDir, ANT_JAR);
+        return new File(getPortalLibLocation(), ANT_JAR);
     }
 
     public static File getValidationApi() {
-        // return ".../tomcat-{version}/webapps/ROOT/WEB-INF/lib/";
-        File portalLibDir = new File(getPortalLibDir());
-        return new File(portalLibDir, VALIDATON_API);
+        return new File(getPortalLibLocation(), VALIDATON_API);
     }
 
     public static File getValidationApiSources() {
-        // return ".../tomcat-{version}/webapps/ROOT/WEB-INF/lib/";
-        File portalLibDir = new File(getPortalLibDir());
-        return new File(portalLibDir, VALIDATON_API_SOURCES);
+        return new File(getPortalLibLocation(), VALIDATON_API_SOURCES);
     }
 
     public static Version getPortalVaadinVersion() {
@@ -399,7 +424,7 @@ public abstract class ControlPanelPortletUtil {
         List<File> libs = new ArrayList<File>();
 
         // Add JARs in portal lib directory
-        File[] jars = new File(getPortalLibDir())
+        File[] jars = new File(getPortalLibLocationPath())
                 .listFiles(WidgetsetUtil.JAR_FILES_ONLY);
         for (File jar : jars) {
             if (!exclude.contains(jar)) {

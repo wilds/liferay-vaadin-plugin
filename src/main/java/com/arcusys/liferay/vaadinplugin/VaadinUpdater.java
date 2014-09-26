@@ -95,9 +95,7 @@ public class VaadinUpdater implements Runnable {
             backupDir = WidgetsetUtil.createBackupDir();
             backupPath = backupDir.getPath();
 
-            String vaadinClientJarsDirPath = ControlPanelPortletUtil.getVaadinClientJarsDir();
-
-            File vaadinClientJarsDir = new File(vaadinClientJarsDirPath);
+            File vaadinClientJarsDir = ControlPanelPortletUtil.getVaadinClientJarsLocation();
             if (!vaadinClientJarsDir.exists()) {
                 vaadinClientJarsDir.mkdir();
             }
@@ -358,12 +356,15 @@ public class VaadinUpdater implements Runnable {
     }
 
     static String getFileNameWithoutVersion(String fileName) {
-        String name = fileName.replaceAll("-(\\d\\.)+.+", "");
+        String name = fileName.replaceAll("-(\\d+\\.)+.+", "");
         if (fileName.endsWith(".GA.jar")) {
             return name + ".GA.jar";
         }
         else if (fileName.endsWith(".GA-sources.jar")) {
             return name + ".GA-sources.jar";
+        }
+        else if (fileName.endsWith(".vaadin1.jar")) {
+            return name + ".vaadin1.jar";
         }
         else {
             String[] parts = fileName.split("\\.");
