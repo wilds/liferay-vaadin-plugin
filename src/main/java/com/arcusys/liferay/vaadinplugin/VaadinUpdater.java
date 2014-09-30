@@ -96,9 +96,10 @@ public class VaadinUpdater implements Runnable {
             backupPath = backupDir.getPath();
 
             File vaadinClientJarsDir = ControlPanelPortletUtil.getVaadinClientJarsLocation();
-            if (!vaadinClientJarsDir.exists()) {
-                vaadinClientJarsDir.mkdir();
+            if (vaadinClientJarsDir.exists()) {
+                FileUtils.deleteDirectory(vaadinClientJarsDir);
             }
+            vaadinClientJarsDir.mkdir();
 
             outputLog.log("Version " + downloadInfo.getVersion().toString());
             try {
