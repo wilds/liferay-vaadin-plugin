@@ -83,6 +83,8 @@ public class WidgetsetCompiler {
         args.add("-Xmx512M");
         args.add("-XX:MaxPermSize=512M");
 
+        //args.add("-verbose:class");
+
         if (System.getProperty("os.name").equals("mac")) {
             args.add("-XstartOnFirstThread");
         }

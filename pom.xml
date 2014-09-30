@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+         <groupId>com.arcusys</groupId>
+        
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.arcusys</groupId>
@@ -14,7 +16,8 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <vaadin.version>7.1.8</vaadin.version>
+        <vaadin.version>7.2.4</vaadin.version>
+        <liferay.version>6.2.0-GA1</liferay.version>
         <vaadin-maven-plugin.version>${vaadin.version}</vaadin-maven-plugin.version>
         <license.licenseName>apache_v2</license.licenseName>
         <github.path>arcusys/${project.artifactId}</github.path>
