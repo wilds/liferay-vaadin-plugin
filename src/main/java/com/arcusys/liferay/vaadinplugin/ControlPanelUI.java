@@ -375,7 +375,7 @@ public class ControlPanelUI extends UI {
     private Label createAddonLibDirLabel() {
         Label addonLibDirLabel = new Label();
         addonLibDirLabel.setSizeUndefined();
-        String value = ControlPanelPortletUtil.getPortalLibDir();
+        String value = ControlPanelPortletUtil.getPortalLibLocationPath();
         addonLibDirLabel.setValue(value);
         return addonLibDirLabel;
     }
@@ -398,7 +398,7 @@ public class ControlPanelUI extends UI {
 
         final List<VaadinAddonInfo> addons = WidgetsetUtil
                 .getAvailableWidgetSets(new File(ControlPanelPortletUtil
-                        .getPortalLibDir()));
+                        .getPortalLibLocationPath()));
         includeAddonsOptionGroup.removeAllItems();
 
         if (addons.isEmpty()) {
@@ -612,7 +612,7 @@ public class ControlPanelUI extends UI {
         String dependencies = preferences.getValue("additionalDependencies", null);
 
         if (dependencies != null) {
-            File dir = new File(ControlPanelPortletUtil.getPortalLibDir());
+            File dir = new File(ControlPanelPortletUtil.getPortalLibLocationPath());
             if (dir.exists()) {
                 for (String fileName : dependencies.split(";")) {
                     fileName = fileName.trim();
@@ -636,7 +636,7 @@ public class ControlPanelUI extends UI {
         if (addonStrings != null) {
             List<VaadinAddonInfo> allAddons = WidgetsetUtil
                     .getAvailableWidgetSets(new File(ControlPanelPortletUtil
-                            .getPortalLibDir()));
+                            .getPortalLibLocationPath()));
             for (String addonString : addonStrings.split(";")) {
                 addonString = addonString.trim();
                 if (!"".equals(addonString)) {
@@ -659,12 +659,15 @@ public class ControlPanelUI extends UI {
                 new VaadinUpdater.UpgradeListener() {
 
                     public void updateComplete() {
+                        getSession().getLockInstance().lock();
                         outputLog.log("Vaadin version upgraded successfully.");
                         outputLog.log("Don't forget to compile widgetset.");
                         done(true);
+                        getSession().getLockInstance().unlock();
                     }
 
                     private void done(boolean success) {
+                        getSession().getLockInstance().lock();
                         refreshVersionInfo();
                         // Stop polling
                         versionUpgradeProgressIndicator.setEnabled(false);
@@ -672,9 +675,11 @@ public class ControlPanelUI extends UI {
                         setButtonsEnabled(true);
 
                         vaadinUpdater = null;
+                        getSession().getLockInstance().unlock();
                     }
 
                     public void updateFailed(String message) {
+                        getSession().getLockInstance().lock();
                         outputLog.log(message);
                         try {
                             vaadinUpdater.restoreFromBackup();
@@ -682,6 +687,7 @@ public class ControlPanelUI extends UI {
                             outputLog.log("ERROR: Can't restore files. Exception: " + ex.getMessage());
                         }
                         done(false);
+                        getSession().getLockInstance().unlock();
                     }
                 }, outputLog);
 
