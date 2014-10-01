@@ -75,6 +75,7 @@ public abstract class ControlPanelPortletUtil {
     private static final String VAADIN_JAR = "vaadin.jar";
     private static final String VALIDATON_API = "validation-api.GA.jar";
     private static final String VALIDATON_API_SOURCES = "validation-api.GA-sources.jar";
+    private static final String SERIALIZER_JAR = "serializer.jar";
 
     public static final String VAADIN_ALL_ZIP = "vaadin-all.zip";
 
@@ -155,7 +156,9 @@ public abstract class ControlPanelPortletUtil {
                     new VaadinFileInfo(STREAM_HTML_PARSER_JSILVER_JAR, vaadinClientJarsPath, 900, libDir),
                     new VaadinFileInfo(JSOUP_JAR, portalPath, 1000, libDir),
                     new VaadinFileInfo(VALIDATON_API, portalPath, 1100, libDir),
-                    new VaadinFileInfo(VALIDATON_API_SOURCES, portalPath, 1200, libDir)
+                    new VaadinFileInfo(VALIDATON_API_SOURCES, portalPath, 1200, libDir),
+                    new VaadinFileInfo(SERIALIZER_JAR, vaadinClientJarsPath, 1300, libDir)
+
             );
         }
 
@@ -176,7 +179,8 @@ public abstract class ControlPanelPortletUtil {
                     new VaadinFileInfo(FLUTE_JAR, vaadinClientJarsPath, 1300, libDir),
                     new VaadinFileInfo(JSOUP_JAR, portalPath, 1400, libDir),
                     new VaadinFileInfo(VALIDATON_API, portalPath, 1500, libDir),
-                    new VaadinFileInfo(VALIDATON_API_SOURCES, portalPath, 1600, libDir)
+                    new VaadinFileInfo(VALIDATON_API_SOURCES, portalPath, 1600, libDir),
+                    new VaadinFileInfo(SERIALIZER_JAR, vaadinClientJarsPath, 1700, libDir)
             );
         }
 
@@ -243,6 +247,10 @@ public abstract class ControlPanelPortletUtil {
 
     public static File getStreamhtmlparserJsilverJarLocation() {
         return new File(getVaadinClientJarsLocation(), STREAM_HTML_PARSER_JSILVER_JAR);
+    }
+
+    public static File getSerializerJarLocation() {
+        return new File(getVaadinClientJarsLocation(), SERIALIZER_JAR);
     }
 
     public static File getFluteJarLocation() {
