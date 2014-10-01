@@ -49,7 +49,6 @@ public class WidgetsetCompiler {
     }
 
     public void compileWidgetset() throws IOException, InterruptedException {
-        String classpathSeparator = System.getProperty("path.separator");
 
         WidgetsetUtil.removeGwtUnitCachePath();
 
@@ -62,15 +61,10 @@ public class WidgetsetCompiler {
             }
         }
 
-        if( someNotExists) {
+        if(someNotExists) {
             System.out.println(nonExistedFiles.toString());
             outputLog.log(nonExistedFiles.toString());
             terminate();
-        }
-
-        StringBuilder classpath = new StringBuilder();
-        for (File classpathEntry : classpathEntries) {
-            classpath.append(classpathEntry).append(classpathSeparator);
         }
 
         ArrayList<String> args = new ArrayList<String>();
@@ -90,7 +84,8 @@ public class WidgetsetCompiler {
         }
 
         args.add("-classpath");
-        args.add(classpath.toString().replaceAll(" ", ControlPanelPortletUtil.FileSeparator + " "));
+
+        args.add(getClassPathArg());
 
         String compilerClass = "com.google.gwt.dev.Compiler";
         args.add(compilerClass);
@@ -181,6 +176,19 @@ public class WidgetsetCompiler {
                 && !controlledTermination) {
             outputLog.log("ERROR: Compilation ended due to an error.");
         }
+    }
+
+    private String getClassPathArg() {
+        String classpathSeparator = System.getProperty("path.separator");
+        StringBuilder classpath = new StringBuilder();
+        for (File classpathEntry : classpathEntries) {
+            classpath.append(classpathEntry).append(classpathSeparator);
+        }
+
+        String classpathString = classpath.toString().trim();
+        return classpathString.endsWith(ControlPanelPortletUtil.FileSeparator)?
+                classpathString + " " :
+                classpathString + ControlPanelPortletUtil.FileSeparator + " ";
     }
 
     public void terminate() {
