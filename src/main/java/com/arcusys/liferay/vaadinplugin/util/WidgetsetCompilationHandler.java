@@ -135,6 +135,10 @@ public class WidgetsetCompilationHandler implements Runnable {
             classpathEntries.add(ControlPanelPortletUtil.getGuavaJarLocation());
             // streamhtmlparser-jsilver-0.0.10.vaadin1.jar
             classpathEntries.add(ControlPanelPortletUtil.getStreamhtmlparserJsilverJarLocation());
+
+            //serializer
+            classpathEntries.add(ControlPanelPortletUtil.getSerializerJarLocation());
+
         } else if(version.compareTo(vaadin730) >= 0 ) {
             // guava-16.0.1.vaadin1.jar
             classpathEntries.add(ControlPanelPortletUtil.getGuavaJarLocation());
@@ -146,6 +150,8 @@ public class WidgetsetCompilationHandler implements Runnable {
             classpathEntries.add(ControlPanelPortletUtil.getJsonJarLocation());
             // sac-1.3.jar
             classpathEntries.add(ControlPanelPortletUtil.getSacJarLocation());
+            //serializer
+            classpathEntries.add(ControlPanelPortletUtil.getSerializerJarLocation());
         }
 
         // The ant.jar is located in the portal lib dir
