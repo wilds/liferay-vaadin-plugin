@@ -1,4 +1,4 @@
-package com.arcusys.liferay.vaadinplugin.VaadinVersion;
+package com.arcusys.liferay.vaadinplugin.vaadinVersion;
 
 /*
  * #%L

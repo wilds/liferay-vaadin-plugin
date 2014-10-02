@@ -21,6 +21,7 @@ package com.arcusys.liferay.vaadinplugin;
  * #L%
  */
 
+import com.arcusys.liferay.vaadinplugin.vaadinVersion.VaadinVersion;
 import com.arcusys.liferay.vaadinplugin.util.*;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -75,6 +76,8 @@ public class VaadinUpdater implements Runnable {
         this.downloadInfo = downloadInfo;
         this.upgradeListener = upgradeListener;
         this.outputLog = outputLog;
+
+
     }
 
    private File backupDir = null;
@@ -165,7 +168,10 @@ public class VaadinUpdater implements Runnable {
                 return;
             }
 
-            Collection<VaadinFileInfo> vaadinFileInfos = ControlPanelPortletUtil.getVaadinFilesInfo(downloadInfo.getVersion());
+            //Collection<VaadinFileInfo> vaadinFileInfos = ControlPanelPortletUtil.getVaadinFilesInfo(downloadInfo.getVersion());
+            Version downloadedVersion = downloadInfo.getVersion();
+            VaadinVersion downloadVaadinInfo = VaadinVersion.getVaadinVersion(downloadedVersion);
+            Collection<VaadinFileInfo> vaadinFileInfos = downloadVaadinInfo.getVaadinFilesInfo();
 
             for (VaadinFileInfo fileInfo : vaadinFileInfos) {
                 replaceFile(zipDestinationPath + fileInfo.getInnerSourcePath(), fileInfo.getPlace(), fileInfo.getName());
@@ -208,7 +214,9 @@ public class VaadinUpdater implements Runnable {
         }
 
         Version currentVersion = ControlPanelPortletUtil.getPortalVaadinVersion();
-        Collection<VaadinFileInfo> vaadinFileInfos = ControlPanelPortletUtil.getVaadinFilesInfo(currentVersion);
+        VaadinVersion currentVaadinInfo = VaadinVersion.getVaadinVersion(currentVersion);
+        Collection<VaadinFileInfo> vaadinFileInfos = currentVaadinInfo.getVaadinFilesInfo();
+
         StringBuffer sb = new StringBuffer();
         Boolean isExistsNotBackuped = false;
 
@@ -250,8 +258,13 @@ public class VaadinUpdater implements Runnable {
 
         String backupFilesPath = backupPath + "/";
 
+//        Version currentVersion = ControlPanelPortletUtil.getPortalVaadinVersion();
+//        Collection<VaadinFileInfo> vaadinFileInfos = ControlPanelPortletUtil.getVaadinFilesInfo(currentVersion);
+
         Version currentVersion = ControlPanelPortletUtil.getPortalVaadinVersion();
-        Collection<VaadinFileInfo> vaadinFileInfos = ControlPanelPortletUtil.getVaadinFilesInfo(currentVersion);
+        VaadinVersion currentVaadinInfo = VaadinVersion.getVaadinVersion(currentVersion);
+        Collection<VaadinFileInfo> vaadinFileInfos = currentVaadinInfo.getVaadinFilesInfo();
+
         StringBuffer sb = new StringBuffer();
         Boolean isExistsNotBackuped = false;
 

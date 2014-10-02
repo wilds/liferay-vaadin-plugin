@@ -22,13 +22,13 @@ package com.arcusys.liferay.vaadinplugin.ui;
 
 import com.arcusys.liferay.vaadinplugin.util.ControlPanelPortletUtil;
 import com.arcusys.liferay.vaadinplugin.util.VaadinFileInfo;
+import com.arcusys.liferay.vaadinplugin.vaadinVersion.VaadinVersion;
 import com.arcusys.liferay.vaadinplugin.util.Version;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
 
-import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -58,8 +58,11 @@ public class DetailsWindow extends Window {
         VerticalLayout vaadinDetails = new VerticalLayout();
         vaadinDetails.setMargin(new MarginInfo(true, true, false, true));
 
+//        Version currentVersion = ControlPanelPortletUtil.getPortalVaadinVersion();
+//        Collection<VaadinFileInfo> fileInfos = ControlPanelPortletUtil.getVaadinFilesInfo(currentVersion);
         Version currentVersion = ControlPanelPortletUtil.getPortalVaadinVersion();
-        Collection<VaadinFileInfo> fileInfos = ControlPanelPortletUtil.getVaadinFilesInfo(currentVersion);
+        VaadinVersion currentVaadinInfo = VaadinVersion.getVaadinVersion(currentVersion);
+        Collection<VaadinFileInfo> fileInfos = currentVaadinInfo.getVaadinFilesInfo();
 
         Collections.sort((List<VaadinFileInfo>) fileInfos, new Comparator<VaadinFileInfo>() {
             @Override
