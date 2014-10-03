@@ -21,45 +21,26 @@ package com.arcusys.liferay.vaadinplugin.vaadinVersion;
  */
 
 import com.arcusys.liferay.vaadinplugin.util.VaadinFileInfo;
-
 import java.util.Arrays;
-import java.util.Collection;
 
 /**
  * Created by igorborisov on 01.10.14.
  */
 public class VaadinVersion70x extends VaadinVersion {
-    private static final String VAADIN_SERVER_JAR = "vaadin-server.jar";
-    private static final String VAADIN_CLIENT_JAR = "vaadin-client.jar";
-    private static final String VAADIN_THEMES_JAR = "vaadin-themes.jar";
-    private static final String VAADIN_THEME_COMPILER_JAR = "vaadin-theme-compiler.jar";
-    private static final String VAADIN_SHARED_JAR = "vaadin-shared.jar";
-    private static final String VAADIN_SHARED_DEPS_JAR = "vaadin-shared-deps.jar";
-    private static final String VAADIN_CLIENT_COMPILER_JAR = "vaadin-client-compiler.jar";
-    private static final String VAADIN_CLIENT_COMPILER_DEPS_JAR = "vaadin-client-compiler-deps.jar";
 
-    private static final String JSOUP_JAR = "jsoup.jar";
-    private static final String VALIDATON_API = "validation-api.GA.jar";
-    private static final String VALIDATON_API_SOURCES = "validation-api.GA-sources.jar";
-
-    @Override
-    public Collection<VaadinFileInfo> getVaadinFilesInfo(){
-
-        vaadinFileInfos = Arrays.asList(
-                new VaadinFileInfo(VAADIN_SERVER_JAR, portalPath, 100),
-                new VaadinFileInfo(VAADIN_CLIENT_JAR, vaadinClientJarsPath, 200),
+    public VaadinVersion70x(){
+        this.vaadinFileInfos = Arrays.asList(
+                new VaadinFileInfo(VAADIN_SERVER_JAR, portalPath, 100, true),
+                new VaadinFileInfo(VAADIN_CLIENT_JAR, vaadinClientJarsPath, 200, true),
                 new VaadinFileInfo(VAADIN_THEMES_JAR, portalPath, 300),
                 new VaadinFileInfo(VAADIN_THEME_COMPILER_JAR, portalPath, 400),
-                new VaadinFileInfo(VAADIN_SHARED_JAR, portalPath, 500),
-                new VaadinFileInfo(VAADIN_SHARED_DEPS_JAR, portalPath, 600, libDir),
-                new VaadinFileInfo(VAADIN_CLIENT_COMPILER_JAR, vaadinClientJarsPath, 700),
-                new VaadinFileInfo(VAADIN_CLIENT_COMPILER_DEPS_JAR, vaadinClientJarsPath, 750, libDir),
+                new VaadinFileInfo(VAADIN_SHARED_JAR, portalPath, 500, true),
+                new VaadinFileInfo(VAADIN_SHARED_DEPS_JAR, portalPath, 600, libDir, true),
+                new VaadinFileInfo(VAADIN_CLIENT_COMPILER_JAR, vaadinClientJarsPath, 700, true),
                 new VaadinFileInfo(JSOUP_JAR, portalPath, 800, libDir),
-                new VaadinFileInfo(VALIDATON_API, portalPath, 900, libDir),
-                new VaadinFileInfo(VALIDATON_API_SOURCES, portalPath, 1000, libDir)
+                new VaadinFileInfo(VALIDATON_API, portalPath, 900, libDir, true),
+                new VaadinFileInfo(VALIDATON_API_SOURCES, portalPath, 1000, libDir, true),
+                new VaadinFileInfo(ANT_JAR, vaadinClientJarsPath, 1100, libDir, true)
         );
-        return vaadinFileInfos;
     }
-
-
 }

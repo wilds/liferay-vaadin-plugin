@@ -24,6 +24,7 @@ import com.arcusys.liferay.vaadinplugin.util.ControlPanelPortletUtil;
 import com.arcusys.liferay.vaadinplugin.util.VaadinFileInfo;
 import com.arcusys.liferay.vaadinplugin.util.Version;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -33,21 +34,32 @@ import java.util.Collection;
 public class VaadinVersion {
 
     protected Collection<VaadinFileInfo> vaadinFileInfos;
+    protected Collection<VaadinFileInfo> vaadinFileCompilationInfos;
+
 
     String portalPath = ControlPanelPortletUtil.getPortalLibLocationPath();
     String vaadinClientJarsPath = ControlPanelPortletUtil.getVaadinClientJarsLocationPath();
     String libDir = ControlPanelPortletUtil.FileSeparator + "lib" + ControlPanelPortletUtil.FileSeparator;
 
-    //TODO change method
-
     public Collection<VaadinFileInfo> getVaadinFilesInfo(){
+        return vaadinFileInfos;
+    }
 
-        return new ArrayList<VaadinFileInfo>();
+    public Collection<File> getVaadinFileInfoForCompilation(){
+
+        Collection<File> files = new ArrayList<File>();
+        for(VaadinFileInfo info: this.vaadinFileInfos){
+            if(info.getNeedForCompilation()) {
+                files.add(info.getLocation());
+            }
+        }
+
+        return files;
     }
 
     public static VaadinVersion getVaadinVersion(String vaadinVersion){
         Version currentVersion = new Version(vaadinVersion);
-        return getVaadinVersion(currentVersion );
+        return getVaadinVersion(currentVersion);
     }
 
     public static VaadinVersion getVaadinVersion(Version vaadinVersion){
@@ -72,4 +84,32 @@ public class VaadinVersion {
             throw new IllegalArgumentException("Unsupported vaadin version");
         }
     }
+
+    protected static final String ANT_JAR = "ant.jar";
+
+    protected static final String VAADIN_SERVER_JAR = "vaadin-server.jar";
+    protected static final String VAADIN_CLIENT_JAR = "vaadin-client.jar";
+    protected static final String VAADIN_THEMES_JAR = "vaadin-themes.jar";
+    protected static final String VAADIN_THEME_COMPILER_JAR = "vaadin-theme-compiler.jar";
+    protected static final String VAADIN_SHARED_JAR = "vaadin-shared.jar";
+    protected static final String VAADIN_SHARED_DEPS_JAR = "vaadin-shared-deps.jar";
+    protected static final String VAADIN_CLIENT_COMPILER_JAR = "vaadin-client-compiler.jar";
+
+    protected static final String JSOUP_JAR = "jsoup.jar";
+    protected static final String VALIDATON_API = "validation-api.GA.jar";
+    protected static final String VALIDATON_API_SOURCES = "validation-api.GA-sources.jar";
+
+    protected static final String VAADIN_PUSH_JAR = "vaadin-push.jar";
+    protected static final String VAADIN_CLIENT_COMPILER_DEPS_JAR = "vaadin-client-compiler-deps.jar";
+
+    protected static final String VAADIN_SASS_COMPILER_JAR = "vaadin-sass-compiler.jar";
+
+    protected static final String GUAVA_JAR = "guava.vaadin1.jar";
+    protected static final String STREAM_HTML_PARSER_JSILVER_JAR = "streamhtmlparser-jsilver.vaadin1.jar";
+
+    protected static final String SERIALIZER_JAR = "serializer.jar";
+
+    protected static final String FLUTE_JAR = "flute.jar";
+    protected static final String JSON_JAR = "json.jar";
+    protected static final String SAC_JAR = "sac.jar";
 }

@@ -54,28 +54,8 @@ public abstract class ControlPanelPortletUtil {
     public static final String VAADIN_DOWNLOAD_URL = "http://vaadin.com/download/";
     public static final String VAADIN_SERVER_JAR = "vaadin-server.jar";
     public static final String VAADIN_THEMES_JAR = "vaadin-themes.jar";
-    private static final String VAADIN_THEME_COMPILER_JAR = "vaadin-theme-compiler.jar";
-    private static final String VAADIN_SASS_COMPILER_JAR = "vaadin-sass-compiler.jar";
-    private static final String VAADIN_PUSH_JAR = "vaadin-push.jar";
-
     public static final String VAADIN_CLIENT_COMPILED_JAR = "vaadin-client-compiled.jar";
-    private static final String VAADIN_CLIENT_COMPILER_JAR = "vaadin-client-compiler.jar";
-    private static final String VAADIN_CLIENT_COMPILER_DEPS_JAR = "vaadin-client-compiler-deps.jar";
-    private static final String VAADIN_CLIENT_JAR = "vaadin-client.jar";
-    private static final String VAADIN_SHARED_JAR = "vaadin-shared.jar";
-    private static final String VAADIN_SHARED_DEPS_JAR = "vaadin-shared-deps.jar";
-    private static final String JSOUP_JAR = "jsoup.jar";
-    private static final String ANT_JAR = "ant.jar";
-    private static final String GUAVA_JAR = "guava.vaadin1.jar";
-    private static final String STREAM_HTML_PARSER_JSILVER_JAR = "streamhtmlparser-jsilver.vaadin1.jar";
-    private static final String FLUTE_JAR = "flute.jar";
-    private static final String JSON_JAR = "json.jar";
-    private static final String SAC_JAR = "sac.jar";
     private static final String VAADIN_JAR = "vaadin.jar";
-    private static final String VALIDATON_API = "validation-api.GA.jar";
-    private static final String VALIDATON_API_SOURCES = "validation-api.GA-sources.jar";
-    private static final String SERIALIZER_JAR = "serializer.jar";
-
     public static final String VAADIN_ALL_ZIP = "vaadin-all.zip";
 
     public static final String FileSeparator = File.separator;
@@ -110,62 +90,6 @@ public abstract class ControlPanelPortletUtil {
 
     public static File getVaadinServerJarLocation() {
         return new File(getPortalLibLocation(), VAADIN_SERVER_JAR);
-    }
-
-    public static File getVaadinClientCompilerJarLocation() {
-        return new File(getVaadinClientJarsLocation(), VAADIN_CLIENT_COMPILER_JAR);
-    }
-
-    public static File getVaadinClientCompilerDepsJarLocation() {
-        return new File(getVaadinClientJarsLocation(), VAADIN_CLIENT_COMPILER_DEPS_JAR);
-    }
-
-    public static File getVaadinClientJarLocation() {
-        return new File(getVaadinClientJarsLocation(), VAADIN_CLIENT_JAR);
-    }
-
-    public static File getVaadinSharedJarLocation() {
-        return new File(getPortalLibLocation(), VAADIN_SHARED_JAR);
-    }
-
-    public static File getVaadinSharedDepsJarLocation() {
-        return new File(getPortalLibLocation(), VAADIN_SHARED_DEPS_JAR);
-    }
-
-    public static File getGuavaJarLocation() {
-        return new File(getVaadinClientJarsLocation(), GUAVA_JAR);
-    }
-
-    public static File getStreamhtmlparserJsilverJarLocation() {
-        return new File(getVaadinClientJarsLocation(), STREAM_HTML_PARSER_JSILVER_JAR);
-    }
-
-    public static File getSerializerJarLocation() {
-        return new File(getVaadinClientJarsLocation(), SERIALIZER_JAR);
-    }
-
-    public static File getFluteJarLocation() {
-        return new File(getVaadinClientJarsLocation(), FLUTE_JAR);
-    }
-
-    public static File getJsonJarLocation() {
-        return new File(getVaadinClientJarsLocation(), JSON_JAR);
-    }
-
-    public static File getSacJarLocation() {
-        return new File(getVaadinClientJarsLocation(), SAC_JAR);
-    }
-
-    public static File getAntJarLocation() {
-        return new File(getPortalLibLocation(), ANT_JAR);
-    }
-
-    public static File getValidationApi() {
-        return new File(getPortalLibLocation(), VALIDATON_API);
-    }
-
-    public static File getValidationApiSources() {
-        return new File(getPortalLibLocation(), VALIDATON_API_SOURCES);
     }
 
     public static Version getPortalVaadinVersion() {

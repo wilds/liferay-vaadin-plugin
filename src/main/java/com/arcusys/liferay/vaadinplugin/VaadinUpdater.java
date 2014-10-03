@@ -66,6 +66,8 @@ public class VaadinUpdater implements Runnable {
     private final DownloadInfo downloadInfo;
     private final ILog outputLog;
 
+    private Version currentVaadinVersion;
+
     public interface UpgradeListener {
         void updateComplete();
 
@@ -77,7 +79,7 @@ public class VaadinUpdater implements Runnable {
         this.upgradeListener = upgradeListener;
         this.outputLog = outputLog;
 
-
+        this.currentVaadinVersion = ControlPanelPortletUtil.getPortalVaadinVersion();
     }
 
    private File backupDir = null;
@@ -168,7 +170,6 @@ public class VaadinUpdater implements Runnable {
                 return;
             }
 
-            //Collection<VaadinFileInfo> vaadinFileInfos = ControlPanelPortletUtil.getVaadinFilesInfo(downloadInfo.getVersion());
             Version downloadedVersion = downloadInfo.getVersion();
             VaadinVersion downloadVaadinInfo = VaadinVersion.getVaadinVersion(downloadedVersion);
             Collection<VaadinFileInfo> vaadinFileInfos = downloadVaadinInfo.getVaadinFilesInfo();
@@ -213,8 +214,7 @@ public class VaadinUpdater implements Runnable {
             replaceFile(vaadin6Version.getParent() + fileSeparator, backupFilesPath, vaadin6Version.getName());
         }
 
-        Version currentVersion = ControlPanelPortletUtil.getPortalVaadinVersion();
-        VaadinVersion currentVaadinInfo = VaadinVersion.getVaadinVersion(currentVersion);
+        VaadinVersion currentVaadinInfo = VaadinVersion.getVaadinVersion(currentVaadinVersion);
         Collection<VaadinFileInfo> vaadinFileInfos = currentVaadinInfo.getVaadinFilesInfo();
 
         StringBuffer sb = new StringBuffer();
@@ -258,11 +258,7 @@ public class VaadinUpdater implements Runnable {
 
         String backupFilesPath = backupPath + "/";
 
-//        Version currentVersion = ControlPanelPortletUtil.getPortalVaadinVersion();
-//        Collection<VaadinFileInfo> vaadinFileInfos = ControlPanelPortletUtil.getVaadinFilesInfo(currentVersion);
-
-        Version currentVersion = ControlPanelPortletUtil.getPortalVaadinVersion();
-        VaadinVersion currentVaadinInfo = VaadinVersion.getVaadinVersion(currentVersion);
+        VaadinVersion currentVaadinInfo = VaadinVersion.getVaadinVersion(currentVaadinVersion);
         Collection<VaadinFileInfo> vaadinFileInfos = currentVaadinInfo.getVaadinFilesInfo();
 
         StringBuffer sb = new StringBuffer();

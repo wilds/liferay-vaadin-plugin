@@ -20,6 +20,8 @@ package com.arcusys.liferay.vaadinplugin.util;
  * #L%
  */
 
+import java.io.File;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Igor.Borisov
@@ -31,16 +33,26 @@ public class VaadinFileInfo {
     private final String place;
     private final String innerSourcePath;
     private final Integer orderPriority;
+    private final Boolean needForCompilation;
 
     public VaadinFileInfo(String name, String place, int orderPriority) {
-        this(name, place, orderPriority, "");
+        this(name, place, orderPriority, "", false);
     }
 
     public VaadinFileInfo(String name, String place, int orderPriority, String innerSourcePath) {
+        this(name, place, orderPriority, innerSourcePath, false);
+    }
+
+    public VaadinFileInfo(String name, String place, int orderPriority, Boolean needForCompilation) {
+        this(name, place, orderPriority, "", needForCompilation);
+    }
+
+    public VaadinFileInfo(String name, String place, int orderPriority, String innerSourcePath, Boolean needForCompilation) {
         this.name = name;
         this.place = place;
         this.innerSourcePath = innerSourcePath;
         this.orderPriority = orderPriority;
+        this.needForCompilation = needForCompilation;
     }
 
     public String getName() {
@@ -58,4 +70,10 @@ public class VaadinFileInfo {
     public Integer getOrderPriority() {
         return orderPriority;
     }
+
+    public Boolean getNeedForCompilation() {
+        return needForCompilation;
+    }
+
+    public File getLocation() { return new File(place, name);}
 }

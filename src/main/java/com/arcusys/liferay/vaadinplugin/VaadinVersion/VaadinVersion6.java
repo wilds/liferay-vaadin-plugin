@@ -41,6 +41,4 @@ public class VaadinVersion6 extends VaadinVersion {
 
         return vaadinFileInfos;
     }
-
-
 }
