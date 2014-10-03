@@ -4,3 +4,5 @@
 /.classpath
 *.iml
 /.idea
+*.DS_Store
+*rebel.xml

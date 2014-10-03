@@ -21,6 +21,7 @@ package com.arcusys.liferay.vaadinplugin.util;
  * #L%
  */
 
+import com.arcusys.liferay.vaadinplugin.vaadinVersion.VaadinVersion;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import org.apache.commons.io.FileUtils;
@@ -101,67 +102,15 @@ public class WidgetsetCompilationHandler implements Runnable {
 
     private List<File> getClasspathEntries(File entry) {
         Version version = ControlPanelPortletUtil.getPortalVaadinVersion();
-        Version vaadin700 = new Version("7.0.0");
-        Version vaadin710 = new Version("7.1.0");
-        Version vaadin720 = new Version("7.2.0");
-        Version vaadin730 = new Version("7.3.0");
 
         List<File> classpathEntries = new ArrayList<File>();
         classpathEntries.add(entry);
 
-        // The vaadin-client-compiler JAR is located in the portal lib dir
-        classpathEntries.add(ControlPanelPortletUtil.getVaadinClientCompilerJarLocation());
+        VaadinVersion currentVaadinVersion = VaadinVersion.getVaadinVersion(version);
 
-        // The vaadin-client JAR is located in the portal lib dir
-        classpathEntries.add(ControlPanelPortletUtil.getVaadinClientJarLocation());
-
-        // The vaadin-server JAR is located in the portal lib dir
-        classpathEntries.add(ControlPanelPortletUtil.getVaadinServerJarLocation());
-
-        // The vaadin-shared.jar is located in the portal lib dir
-        classpathEntries.add(ControlPanelPortletUtil.getVaadinSharedJarLocation());
-
-        if (version.compareTo(vaadin710) >= 0) {
-            // The vaadin-client-compiler-deps JAR is located in the portal lib dir
-            classpathEntries.add(ControlPanelPortletUtil.getVaadinClientCompilerDepsJarLocation());
+        for (File file : currentVaadinVersion.getVaadinFileInfoForCompilation()) {
+            classpathEntries.add(file);
         }
-
-        if(version.compareTo(vaadin700) >= 0 && version.compareTo(vaadin720) < 0){
-            // The vaadin-shared-deps.jar is located in the portal lib dir
-            classpathEntries.add(ControlPanelPortletUtil.getVaadinSharedDepsJarLocation());
-
-        } else if(version.compareTo(vaadin720) >= 0 && version.compareTo(vaadin730) < 0) {
-            // guava-16.0.1.vaadin1.jar
-            classpathEntries.add(ControlPanelPortletUtil.getGuavaJarLocation());
-            // streamhtmlparser-jsilver-0.0.10.vaadin1.jar
-            classpathEntries.add(ControlPanelPortletUtil.getStreamhtmlparserJsilverJarLocation());
-
-            //serializer
-            classpathEntries.add(ControlPanelPortletUtil.getSerializerJarLocation());
-
-        } else if(version.compareTo(vaadin730) >= 0 ) {
-            // guava-16.0.1.vaadin1.jar
-            classpathEntries.add(ControlPanelPortletUtil.getGuavaJarLocation());
-            // streamhtmlparser-jsilver-0.0.10.vaadin1.jar
-            classpathEntries.add(ControlPanelPortletUtil.getStreamhtmlparserJsilverJarLocation());
-            // flute-1.3.0.gg2.jar
-            classpathEntries.add(ControlPanelPortletUtil.getFluteJarLocation());
-            // json-0.0.20080701.jar
-            classpathEntries.add(ControlPanelPortletUtil.getJsonJarLocation());
-            // sac-1.3.jar
-            classpathEntries.add(ControlPanelPortletUtil.getSacJarLocation());
-            //serializer
-            classpathEntries.add(ControlPanelPortletUtil.getSerializerJarLocation());
-        }
-
-        // The ant.jar is located in the portal lib dir
-        classpathEntries.add(ControlPanelPortletUtil.getAntJarLocation());
-
-        // The validation-api.GA.jar is located in the portal lib dir
-        classpathEntries.add(ControlPanelPortletUtil.getValidationApi());
-
-        // The validation-api.GA-sources.jar is located in the portal lib dir
-        classpathEntries.add(ControlPanelPortletUtil.getValidationApiSources());
 
         for (VaadinAddonInfo addon : includeAddons) {
             classpathEntries.add(addon.getJarFile());
