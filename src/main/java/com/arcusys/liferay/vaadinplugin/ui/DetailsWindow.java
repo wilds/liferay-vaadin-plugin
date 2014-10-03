@@ -58,8 +58,6 @@ public class DetailsWindow extends Window {
         VerticalLayout vaadinDetails = new VerticalLayout();
         vaadinDetails.setMargin(new MarginInfo(true, true, false, true));
 
-//        Version currentVersion = ControlPanelPortletUtil.getPortalVaadinVersion();
-//        Collection<VaadinFileInfo> fileInfos = ControlPanelPortletUtil.getVaadinFilesInfo(currentVersion);
         Version currentVersion = ControlPanelPortletUtil.getPortalVaadinVersion();
         VaadinVersion currentVaadinInfo = VaadinVersion.getVaadinVersion(currentVersion);
         Collection<VaadinFileInfo> fileInfos = currentVaadinInfo.getVaadinFilesInfo();
