@@ -46,7 +46,7 @@ public class VaadinVersion73x extends VaadinVersion {
                 new VaadinFileInfo(VAADIN_CLIENT_COMPILER_DEPS_JAR, vaadinClientJarsPath, 800, libDir, true),
                 new VaadinFileInfo(GUAVA_JAR, vaadinClientJarsPath, 900, libDir, true),
                 new VaadinFileInfo(STREAM_HTML_PARSER_JSILVER_JAR, vaadinClientJarsPath, 1000, libDir, true),
-                new VaadinFileInfo(JSON_JAR, vaadinClientJarsPath, 1100, libDir),
+                new VaadinFileInfo(JSON_JAR, vaadinClientJarsPath, 1100, libDir, true),
                 new VaadinFileInfo(SAC_JAR, vaadinClientJarsPath, 1200, libDir, true),
                 new VaadinFileInfo(FLUTE_JAR, vaadinClientJarsPath, 1300, libDir, true),
                 new VaadinFileInfo(JSOUP_JAR, portalPath, 1400, libDir, true),
