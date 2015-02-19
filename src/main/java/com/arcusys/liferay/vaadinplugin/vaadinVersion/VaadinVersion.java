@@ -69,6 +69,7 @@ public class VaadinVersion {
         Version version710 = new Version("7.1.0");
         Version version720 = new Version("7.2.0");
         Version version730 = new Version("7.3.0");
+        Version version740 = new Version("7.4.0");
 
         if (vaadinVersion.compareTo(version600) >= 0 && vaadinVersion.compareTo(version700) < 0) {
             return new VaadinVersion6();
@@ -78,8 +79,10 @@ public class VaadinVersion {
             return new VaadinVersion71x();
         }else if (vaadinVersion.compareTo(version720) >= 0 && vaadinVersion.compareTo(version730) < 0)  {
             return new VaadinVersion72x();
-        }else if (vaadinVersion.compareTo(version730) >= 0)  {
+        }else if (vaadinVersion.compareTo(version730) >= 0 && vaadinVersion.compareTo(version740) < 0)  {
             return new VaadinVersion73x();
+        }else if (vaadinVersion.compareTo(version740) >= 0)  {
+            return new VaadinVersion74x();
         }else{
             throw new IllegalArgumentException("Unsupported vaadin version");
         }
@@ -112,4 +115,5 @@ public class VaadinVersion {
     protected static final String FLUTE_JAR = "flute.jar";
     protected static final String JSON_JAR = "json.jar";
     protected static final String SAC_JAR = "sac.jar";
+    protected static final String ASM_JAR = "asm.jar";
 }
