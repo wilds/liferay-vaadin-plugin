@@ -16,7 +16,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <vaadin.version>7.2.4</vaadin.version>
+        <vaadin.version>7.3.10</vaadin.version>
         <liferay.version>6.2.0-GA1</liferay.version>
         <vaadin-maven-plugin.version>${vaadin.version}</vaadin-maven-plugin.version>
         <license.licenseName>apache_v2</license.licenseName>
@@ -192,7 +192,9 @@
                     <execution>
                         <goals>
                             <goal>resources</goal>
+                            <goal>update-theme</goal>
                             <goal>update-widgetset</goal>
+                            <goal>compile-theme</goal>
                             <goal>compile</goal>
                         </goals>
                     </execution>

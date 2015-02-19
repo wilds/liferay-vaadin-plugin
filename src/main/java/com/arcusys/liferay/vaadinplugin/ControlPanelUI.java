@@ -59,6 +59,7 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.Portlet;
 import com.liferay.portal.service.PortletLocalServiceUtil;
 import com.liferay.portlet.PortletPreferencesFactoryUtil;
+import com.vaadin.annotations.Theme;
 import com.vaadin.data.Property;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.shared.ui.label.ContentMode;
@@ -78,6 +79,7 @@ import com.vaadin.ui.themes.BaseTheme;
 
 
 @SuppressWarnings("serial")
+@Theme("valo")
 public class ControlPanelUI extends UI {
     private static final String WARNING_UPGRADE_VAADIN_VERSION_NOT_FOUND = "Could not determine the newest Vaadin version. Please download it manually from "
             + ControlPanelPortletUtil.VAADIN_DOWNLOAD_URL;
@@ -162,7 +164,7 @@ public class ControlPanelUI extends UI {
     private void createUI() {
         //create main layout
         mainLayout = new VerticalLayout();
-        mainLayout.setWidth("720px");
+        mainLayout.setWidth("100%");
         mainLayout.setSpacing(true);
 
         setContent(mainLayout);
@@ -171,6 +173,7 @@ public class ControlPanelUI extends UI {
         settingsPanel = new Panel("Settings");
         settingsLayout = new FormLayout();
         settingsPanel.setContent(settingsLayout);
+        settingsLayout.setMargin(true);
 
         versionUpgradeProgressIndicator = createProgressIndicator();
 
@@ -332,22 +335,28 @@ public class ControlPanelUI extends UI {
         }
         vaadinVersionLabel.setValue(version);
         layout.addComponent(vaadinVersionLabel);
+        layout.setComponentAlignment(vaadinVersionLabel, Alignment.MIDDLE_LEFT);
 
         if (version.startsWith("7")) {
             layout.addComponent(detailsButton);
+            layout.setComponentAlignment(detailsButton, Alignment.MIDDLE_LEFT);
         }
 
         layout.addComponent(changeVersionButton);
+        layout.setComponentAlignment(changeVersionButton, Alignment.MIDDLE_LEFT);
 
         Label newestVaadinVersionLabel = new Label();
         newestVaadinVersionLabel.setSizeUndefined();
         newestVaadinVersionLabel.setValue("(newest stable version: " + newestVersion + ")");
         layout.addComponent(newestVaadinVersionLabel);
+        layout.setComponentAlignment(newestVaadinVersionLabel, Alignment.MIDDLE_LEFT);
 
         if (!version.equals(newestVersion)) {
             layout.addComponent(updateVaadinVersionButton);
+            layout.setComponentAlignment(updateVaadinVersionButton, Alignment.MIDDLE_LEFT);
         }
         layout.addComponent(versionUpgradeProgressIndicator);
+        layout.setComponentAlignment(versionUpgradeProgressIndicator, Alignment.MIDDLE_LEFT);
         return layout;
     }
 
@@ -365,6 +374,7 @@ public class ControlPanelUI extends UI {
         layout.setCaption("Add-on Directory");
         addonLibDirLabel = createAddonLibDirLabel();
         layout.addComponent(addonLibDirLabel);
+        layout.setComponentAlignment(addonLibDirLabel, Alignment.MIDDLE_LEFT);
         refreshButton = createRefreshButton();
         layout.addComponent(refreshButton);
         layout.setComponentAlignment(refreshButton, Alignment.MIDDLE_LEFT);
